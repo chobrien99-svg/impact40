@@ -1,12 +1,12 @@
-# France Just Named Its 100 Most Promising Impact Startups — And the List Says a Lot About Where the Country Is Heading
+# France Just Named Its 120 Most Promising Impact Startups — And the List Says a Lot About Where the Country Is Heading
 
-On March 31, 2026, Impact France — the country's leading organization for socially and environmentally engaged entrepreneurs — unveiled its third annual Impact 40/120 index, a ranking of the 100 French startups most likely to become the next generation of "impact unicorns." The list, published in partnership with the business daily Les Echos, reads like a roadmap of France's economic ambitions: cleaner energy, a circular economy, AI with a conscience, and a healthcare system that actually reaches people who need it.
+On March 31, 2026, Impact France — the country's leading organization for socially and environmentally engaged entrepreneurs — unveiled its third annual Impact 40/120 index, a ranking of the 120 French startups most likely to become the next generation of "impact unicorns." The structure is a two-tier system: the top 40 companies deemed closest to unicorn status form the elite Impact 40, while 80 more high-potential companies round out the Impact 120. Published in partnership with the business daily Les Echos, the list reads like a roadmap of France's economic ambitions: cleaner energy, a circular economy, AI with a conscience, and a healthcare system that actually reaches people who need it.
 
-And the numbers backing the cohort are striking. The 100 laureates have collectively raised 7.4 billion euros since inception — a 17.5% jump from 2024. More than half (53%) now operate internationally. A full 51% have at least one woman on the founding team. And 36% are already profitable, a figure that quietly demolishes the old cliché that purpose-driven companies can't make money.
+And the numbers backing the cohort are striking. The laureates have collectively raised 7.4 billion euros since inception — a 17.5% jump from 2024. More than half (53%) now operate internationally. A full 51% have at least one woman on the founding team. And 36% are already profitable, a figure that quietly demolishes the old cliché that purpose-driven companies can't make money.
 
 ## The Circular Economy Is King
 
-The single biggest sector in the 2026 cohort? Circular economy and sustainable consumption, with 28 companies out of 100. That's not a niche — it's a movement. Names like Too Good To Go (the anti-food-waste giant), Murfy (which repairs rather than replaces home appliances), 900.care (refillable personal care), and CertiDeal (refurbished electronics) have turned reducing waste into scalable business models. Le Fourgon, out of northern France, revives the old-fashioned returnable bottle — and has grown into a 200-plus-person operation doing it.
+The single biggest sector in the 2026 cohort? Circular economy and sustainable consumption, with at least 28 companies. That's not a niche — it's a movement. Names like Too Good To Go (the anti-food-waste giant), Murfy (which repairs rather than replaces home appliances), 900.care (refillable personal care), and CertiDeal (refurbished electronics) have turned reducing waste into scalable business models. Le Fourgon, out of northern France, revives the old-fashioned returnable bottle — and has grown into a 200-plus-person operation doing it.
 
 Within the elite Impact 40 tier — the top 40 companies considered most likely to reach unicorn status — eight are in circular economy. France is clearly betting that the future of consumption isn't about buying more, but buying smarter.
 
@@ -24,7 +24,7 @@ With 13 companies in health and vulnerability, and 12 more in social inclusion, 
 
 ## Paris Dominates, But Not Entirely
 
-Sixty-two of the 100 companies are based in Île-de-France — no surprise there. But the regional spread tells an interesting story. Auvergne-Rhône-Alpes claims nine laureates, including the industrial heavyweights Verkor and Elyse Energy. Pays de la Loire, Occitanie, and Nouvelle-Aquitaine each contribute six. Even France's overseas territories are represented, with Domissori, an education startup, based in Outre-mer. The geography suggests that while Paris remains the gravitational center, impact entrepreneurship is genuinely decentralizing.
+The majority of laureates are based in Île-de-France — no surprise there. But the regional spread tells an interesting story. Auvergne-Rhône-Alpes claims nine laureates, including the industrial heavyweights Verkor and Elyse Energy. Pays de la Loire, Occitanie, and Nouvelle-Aquitaine each contribute six. Even France's overseas territories are represented, with Domissori, an education startup, based in Outre-mer. The geography suggests that while Paris remains the gravitational center, impact entrepreneurship is genuinely decentralizing.
 
 ## What the Numbers Reveal About Larger Trends
 
