@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impact 40/120 — 2026 Cohort Explorer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Mono:wght@300;400&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root {
+  --space:    #0b0e1a;
+  --deep:     #111627;
+  --panel:    #171d30;
+  --edge:     #1f2842;
+  --gold:     #d4a24e;
+  --amber:    #e8b85e;
+  --teal:     #4ec6c1;
+  --ring:     #6b8cae;
+  --rose:     #c27878;
+  --dust:     #9a8e82;
+  --frost:    #c8cdd8;
+  --light:    #e4e7ef;
+  --white:    #f2f3f7;
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: var(--space);
+  color: var(--frost);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+.header {
+  padding: 2.5rem 2rem 1.8rem;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+.header h1 span { color: var(--gold); }
+.header .sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ring);
+  margin-top: 0.4rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.stats-row {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+.stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.stat-val {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--dust);
+}
+
+/* ── Layout ── */
+.layout {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.5rem;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--edge) transparent;
+}
+.filter-group {
+  margin-bottom: 1.4rem;
+}
+.filter-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dust);
+  margin-bottom: 0.5rem;
+}
+.filter-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--ring);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.4;
+}
+.filter-btn:hover {
+  color: var(--light);
+  background: var(--edge);
+}
+.filter-btn.active {
+  color: var(--gold);
+  background: rgba(212,162,78,0.1);
+}
+.filter-btn .count {
+  float: right;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--edge);
+  transition: color 0.15s ease;
+}
+.filter-btn:hover .count,
+.filter-btn.active .count {
+  color: var(--dust);
+}
+
+/* ── Search ── */
+.search-wrap {
+  margin-bottom: 1.6rem;
+}
+.search-input {
+  width: 100%;
+  background: var(--deep);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  padding: 0.55rem 0.7rem;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input::placeholder { color: var(--dust); }
+.search-input:focus { border-color: var(--gold); }
+
+/* ── Results header ── */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.result-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--dust);
+  letter-spacing: 0.04em;
+}
+.result-count em {
+  font-style: normal;
+  color: var(--gold);
+}
+.sort-controls {
+  display: flex;
+  gap: 0.3rem;
+}
+.sort-btn {
+  background: none;
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  color: var(--ring);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sort-btn:hover { border-color: var(--ring); color: var(--light); }
+.sort-btn.active { border-color: var(--gold); color: var(--gold); }
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.8rem;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  padding: 1.1rem 1.2rem;
+  transition: all 0.2s ease;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  border-radius: 8px 0 0 8px;
+  transition: background 0.2s;
+}
+.card.tier-40::before { background: var(--gold); }
+.card.tier-120::before { background: var(--edge); }
+.card:hover {
+  border-color: var(--ring);
+  background: var(--deep);
+  transform: translateY(-1px);
+}
+.card:hover.tier-40::before { background: var(--amber); }
+.card:hover.tier-120::before { background: var(--teal); }
+.card-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  line-height: 1;
+}
+.tag-sector {
+  background: rgba(78,198,193,0.1);
+  color: var(--teal);
+}
+.tag-region {
+  background: rgba(107,140,174,0.08);
+  color: var(--ring);
+}
+.tag-tier {
+  background: rgba(212,162,78,0.12);
+  color: var(--gold);
+}
+.tag-tier.t120 {
+  background: rgba(107,140,174,0.1);
+  color: var(--ring);
+}
+.tag-size {
+  background: rgba(154,142,130,0.1);
+  color: var(--dust);
+}
+
+/* ── Empty ── */
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--dust);
+  font-size: 0.9rem;
+}
+
+/* ── Mobile ── */
+@media (max-width: 800px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding: 0 1rem 2rem;
+  }
+  .sidebar {
+    position: static;
+    max-height: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .filter-group { flex: 1; min-width: 140px; }
+  .header { padding: 1.5rem 1rem 1rem; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Impact <span>40</span>/120 <span style="color:var(--frost);font-weight:300">2026</span></h1>
+  <div class="sub">Cohort Explorer &mdash; Les futures licornes a impact</div>
+  <div class="stats-row">
+    <div class="stat"><span class="stat-val">120</span><span class="stat-label">laureates</span></div>
+    <div class="stat"><span class="stat-val">7.4B</span><span class="stat-label">EUR raised</span></div>
+    <div class="stat"><span class="stat-val">51%</span><span class="stat-label">female co-founder</span></div>
+    <div class="stat"><span class="stat-val">53%</span><span class="stat-label">international</span></div>
+    <div class="stat"><span class="stat-val">36%</span><span class="stat-label">profitable</span></div>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="search-wrap">
+      <input type="text" class="search-input" id="search" placeholder="Search companies...">
+    </div>
+    <div id="filters"></div>
+  </aside>
+  <main>
+    <div class="results-header">
+      <div class="result-count" id="count"></div>
+      <div class="sort-controls">
+        <button class="sort-btn active" data-sort="name">A-Z</button>
+        <button class="sort-btn" data-sort="sector">Sector</button>
+        <button class="sort-btn" data-sort="region">Region</button>
+        <button class="sort-btn" data-sort="tier">Tier</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+
+<script>
+const DATA = [
+  // ── Impact 40 ──
+  {n:"Vesta Construction Technologies",s:"Biodiversite et climat",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Refectory",s:"Agriculture et alimentation",r:"Hauts-de-France",t:"40",sz:"200-500"},
+  {n:"Groupe Ouihelp",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"40",sz:"500+"},
+  {n:"Hublo",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"NEOSILVER",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Groupe MonSenior",s:"Sante et vulnerabilite",r:"Auvergne-Rhone-Alpes",t:"40",sz:"20-50"},
+  {n:"WAAT",s:"Mobilite",r:"Ile-de-France",t:"40",sz:"200-500"},
+  {n:"Upway France",s:"Mobilite",r:"Ile-de-France",t:"40",sz:"200-500"},
+  {n:"pony",s:"Mobilite",r:"Pays de la Loire",t:"40",sz:"20-50"},
+  {n:"Electra",s:"Mobilite",r:"Ile-de-France",t:"40",sz:"200-500"},
+  {n:"Verkor",s:"Mobilite",r:"Auvergne-Rhone-Alpes",t:"40",sz:"500+"},
+  {n:"Api les superettes",s:"Inclusion et lien social",r:"Nouvelle-Aquitaine",t:"40",sz:"50-200"},
+  {n:"Cafe Joyeux",s:"Inclusion et lien social",r:"Ile-de-France",t:"40",sz:"200-500"},
+  {n:"Implicity",s:"IA",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Kayrros",s:"IA",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Bump",s:"Energie",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"elmy Groupe",s:"Energie",r:"Auvergne-Rhone-Alpes",t:"40",sz:"50-200"},
+  {n:"Elyse Energy",s:"Energie",r:"Auvergne-Rhone-Alpes",t:"40",sz:"50-200"},
+  {n:"Qair",s:"Energie",r:"Ile-de-France",t:"40",sz:"500+"},
+  {n:"EODev",s:"Energie",r:"Ile-de-France",t:"40",sz:"20-50"},
+  {n:"ilek",s:"Energie",r:"Occitanie",t:"40",sz:"50-200"},
+  {n:"Hello Watt",s:"Energie",r:"Ile-de-France",t:"40",sz:"200-500"},
+  {n:"Domissori",s:"Education et formation",r:"Outre-mer",t:"40",sz:"200-500"},
+  {n:"900.care",s:"Economie circulaire",r:"Ile-de-France",t:"40",sz:"20-50"},
+  {n:"CertiDeal",s:"Economie circulaire",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Too Good To Go",s:"Economie circulaire",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Le Fourgon",s:"Economie circulaire",r:"Hauts-de-France",t:"40",sz:"200-500"},
+  {n:"Ecodair H",s:"Economie circulaire",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"NOUS Anti Gaspi",s:"Economie circulaire",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Les Alchimistes",s:"Economie circulaire",r:"Ile-de-France",t:"40",sz:"200-500"},
+  {n:"Murfy",s:"Economie circulaire",r:"Hauts-de-France",t:"40",sz:"200-500"},
+  {n:"Greenly",s:"Biodiversite et climat",r:"Ile-de-France",t:"40",sz:"200-500"},
+  {n:"Sweep",s:"Biodiversite et climat",r:"Occitanie",t:"40",sz:"50-200"},
+  {n:"Green-Got",s:"Biodiversite et climat",r:"Ile-de-France",t:"40",sz:"20-50"},
+  {n:"C'est qui le Patron ?",s:"Agriculture et alimentation",r:"Ile-de-France",t:"40",sz:"20-50"},
+  {n:"Yuka",s:"Agriculture et alimentation",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"La Fourche",s:"Agriculture et alimentation",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"HAPPYVORE",s:"Agriculture et alimentation",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"La Vie",s:"Agriculture et alimentation",r:"Ile-de-France",t:"40",sz:"50-200"},
+  {n:"Innovafeed",s:"Agriculture et alimentation",r:"Hauts-de-France",t:"40",sz:"200-500"},
+  // ── Impact 120 ──
+  {n:"La maison de Blandine",s:"Sante et vulnerabilite",r:"Auvergne-Rhone-Alpes",t:"120",sz:"50-200"},
+  {n:"Invers",s:"Agriculture et alimentation",r:"Auvergne-Rhone-Alpes",t:"120",sz:"20-50"},
+  {n:"Ettic",s:"Sante et vulnerabilite",r:"Pays de la Loire",t:"120",sz:"20-50"},
+  {n:"Banlieues Sante",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Alenvi",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"120",sz:"50-200"},
+  {n:"teale",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"May",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"CetteFamille",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"moka.care",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"120",sz:"50-200"},
+  {n:"Zenride",s:"Mobilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Beev",s:"Mobilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Omnidoc",s:"Sante et vulnerabilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Neot Capital",s:"Mobilite",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"each One",s:"Inclusion et lien social",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"KODIKO",s:"Inclusion et lien social",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"SAMV",s:"Inclusion et lien social",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Tom & Josette",s:"Inclusion et lien social",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"HANDIWORK",s:"Inclusion et lien social",r:"Occitanie",t:"120",sz:"20-50"},
+  {n:"Facil'iti",s:"Inclusion et lien social",r:"Nouvelle-Aquitaine",t:"120",sz:"20-50"},
+  {n:"LIVA",s:"Inclusion et lien social",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Yoti",s:"Inclusion et lien social",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Komeet",s:"Inclusion et lien social",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Weavers",s:"Inclusion et lien social",r:"Auvergne-Rhone-Alpes",t:"120",sz:"20-50"},
+  {n:"Satelia",s:"IA",r:"Nouvelle-Aquitaine",t:"120",sz:"20-50"},
+  {n:"Synapse Medicine",s:"IA",r:"Nouvelle-Aquitaine",t:"120",sz:"50-200"},
+  {n:"Leakmited",s:"IA",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"PureControl",s:"IA",r:"Bretagne",t:"120",sz:"20-50"},
+  {n:"Orikio",s:"IA",r:"Bretagne",t:"120",sz:"20-50"},
+  {n:"Incepto Medical",s:"IA",r:"Ile-de-France",t:"120",sz:"50-200"},
+  {n:"ACCENTA",s:"IA",r:"Ile-de-France",t:"120",sz:"50-200"},
+  {n:"CANTOO",s:"IA",r:"Hauts-de-France",t:"120",sz:"20-50"},
+  {n:"Lixo",s:"IA",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"ALTAROAD",s:"IA",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Lhyfe",s:"Energie",r:"Pays de la Loire",t:"120",sz:"200-500"},
+  {n:"Solarock",s:"Energie",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Elax Energie",s:"Energie",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Sensinov",s:"Energie",r:"Occitanie",t:"120",sz:"20-50"},
+  {n:"BEEM ENERGY",s:"Energie",r:"Pays de la Loire",t:"120",sz:"50-200"},
+  {n:"Ecojoko",s:"Energie",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Reverto",s:"Education et formation",r:"Auvergne-Rhone-Alpes",t:"120",sz:"20-50"},
+  {n:"hupso",s:"Education et formation",r:"Auvergne-Rhone-Alpes",t:"120",sz:"20-50"},
+  {n:"Poppins",s:"Education et formation",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Epsor",s:"Education et formation",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"La Solive",s:"Education et formation",r:"Ile-de-France",t:"120",sz:"50-200"},
+  {n:"Fairmat",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"50-200"},
+  {n:"LES RIPEURS",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Bluedigo",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Geev",s:"Economie circulaire",r:"Nouvelle-Aquitaine",t:"120",sz:"20-50"},
+  {n:"58 Facettes",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Underdog",s:"Economie circulaire",r:"Pays de la Loire",t:"120",sz:"20-50"},
+  {n:"UZAJE",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Lokki",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Faume",s:"Economie circulaire",r:"Normandie",t:"120",sz:"20-50"},
+  {n:"Carton Vert",s:"Economie circulaire",r:"Nouvelle-Aquitaine",t:"120",sz:"20-50"},
+  {n:"Tri'n'Collect",s:"Economie circulaire",r:"Pays de la Loire",t:"120",sz:"20-50"},
+  {n:"HUBCYCLE",s:"Economie circulaire",r:"Provence-Alpes-Cote d'Azur",t:"120",sz:"20-50"},
+  {n:"MagicPallet",s:"Economie circulaire",r:"Occitanie",t:"120",sz:"20-50"},
+  {n:"Le Drive tout nu",s:"Economie circulaire",r:"Occitanie",t:"120",sz:"20-50"},
+  {n:"Vesto",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Done",s:"Economie circulaire",r:"Hauts-de-France",t:"120",sz:"20-50"},
+  {n:"mobile.club",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Pimpant",s:"Economie circulaire",r:"Normandie",t:"120",sz:"20-50"},
+  {n:"Unbottled",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"BBOT",s:"Economie circulaire",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"GEOLITH",s:"Biodiversite et climat",r:"Ile-de-France",t:"120",sz:"50-200"},
+  {n:"TeleCoop",s:"Biodiversite et climat",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Dioxycle",s:"Biodiversite et climat",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"WeeFin",s:"Biodiversite et climat",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"InovaYa",s:"Biodiversite et climat",r:"Auvergne-Rhone-Alpes",t:"120",sz:"20-50"},
+  {n:"Carbo",s:"Biodiversite et climat",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Fairly Made",s:"Biodiversite et climat",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Goodvest",s:"Biodiversite et climat",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"ACCRO (Nxtfood)",s:"Agriculture et alimentation",r:"Hauts-de-France",t:"120",sz:"20-50"},
+  {n:"Beyond Green",s:"Agriculture et alimentation",r:"Hauts-de-France",t:"120",sz:"20-50"},
+  {n:"Atypique",s:"Agriculture et alimentation",r:"Auvergne-Rhone-Alpes",t:"120",sz:"20-50"},
+  {n:"SABI AGRI",s:"Agriculture et alimentation",r:"Auvergne-Rhone-Alpes",t:"120",sz:"20-50"},
+  {n:"nona",s:"Agriculture et alimentation",r:"Ile-de-France",t:"120",sz:"20-50"},
+  {n:"Eloi",s:"Agriculture et alimentation",r:"Bretagne",t:"120",sz:"20-50"},
+  {n:"Jay & Joy",s:"Agriculture et alimentation",r:"Hauts-de-France",t:"120",sz:"20-50"},
+  {n:"Feve",s:"Agriculture et alimentation",r:"Nouvelle-Aquitaine",t:"120",sz:"20-50"},
+];
+
+// ── State ──
+let filters = { tier: null, sector: null, region: null, size: null };
+let sortKey = 'name';
+let query = '';
+
+// ── Helpers ──
+function unique(key) {
+  const vals = [...new Set(DATA.map(d => d[key]))].sort();
+  return vals;
+}
+function countBy(key, val) {
+  return DATA.filter(d => d[key] === val).length;
+}
+
+// ── Build filters ──
+function buildFilters() {
+  const el = document.getElementById('filters');
+  const groups = [
+    { key: 't', label: 'Tier', values: ['40','120'], fkey: 'tier' },
+    { key: 's', label: 'Sector', values: unique('s'), fkey: 'sector' },
+    { key: 'r', label: 'Region', values: unique('r'), fkey: 'region' },
+    { key: 'sz', label: 'Size (employees)', values: ['< 20','20-50','50-200','200-500','500+'], fkey: 'size' },
+  ];
+  // map display sizes to data sizes
+  const sizeMap = { '< 20': '< 20', '20-50': '20-50', '50-200': '50-200', '200-500': '200-500', '500+': '500+' };
+
+  let html = '';
+  for (const g of groups) {
+    html += `<div class="filter-group"><div class="filter-title">${g.label}</div>`;
+    for (const v of g.values) {
+      const dataVal = v;
+      let count;
+      if (g.key === 't') count = DATA.filter(d => d.t === v).length;
+      else if (g.key === 'sz') count = DATA.filter(d => d.sz === v).length;
+      else count = countBy(g.key === 's' ? 's' : 'r', v);
+      const display = g.key === 't' ? `Impact ${v}` : v;
+      html += `<button class="filter-btn" data-fkey="${g.fkey}" data-val="${v}">${display}<span class="count">${count}</span></button>`;
+    }
+    html += '</div>';
+  }
+  el.innerHTML = html;
+
+  el.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const fkey = btn.dataset.fkey;
+      const val = btn.dataset.val;
+      if (filters[fkey] === val) {
+        filters[fkey] = null;
+        btn.classList.remove('active');
+      } else {
+        el.querySelectorAll(`.filter-btn[data-fkey="${fkey}"]`).forEach(b => b.classList.remove('active'));
+        filters[fkey] = val;
+        btn.classList.add('active');
+      }
+      render();
+    });
+  });
+}
+
+// ── Render ──
+function render() {
+  let items = DATA.filter(d => {
+    if (filters.tier && d.t !== filters.tier) return false;
+    if (filters.sector && d.s !== filters.sector) return false;
+    if (filters.region && d.r !== filters.region) return false;
+    if (filters.size && d.sz !== filters.size) return false;
+    if (query && !d.n.toLowerCase().includes(query)) return false;
+    return true;
+  });
+
+  // Sort
+  items.sort((a, b) => {
+    if (sortKey === 'name') return a.n.localeCompare(b.n);
+    if (sortKey === 'sector') return a.s.localeCompare(b.s) || a.n.localeCompare(b.n);
+    if (sortKey === 'region') return a.r.localeCompare(b.r) || a.n.localeCompare(b.n);
+    if (sortKey === 'tier') {
+      if (a.t !== b.t) return a.t === '40' ? -1 : 1;
+      return a.n.localeCompare(b.n);
+    }
+    return 0;
+  });
+
+  // Count
+  document.getElementById('count').innerHTML = `<em>${items.length}</em> of ${DATA.length} companies`;
+
+  // Cards
+  const grid = document.getElementById('grid');
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="empty">No companies match your filters.</div>';
+    return;
+  }
+  grid.innerHTML = items.map(d => `
+    <div class="card tier-${d.t}">
+      <div class="card-name">${d.n}</div>
+      <div class="card-meta">
+        <span class="tag tag-tier ${d.t === '120' ? 't120' : ''}">Impact ${d.t}</span>
+        <span class="tag tag-sector">${d.s}</span>
+        <span class="tag tag-region">${d.r}</span>
+        <span class="tag tag-size">${d.sz} emp.</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── Sort buttons ──
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    sortKey = btn.dataset.sort;
+    render();
+  });
+});
+
+// ── Search ──
+document.getElementById('search').addEventListener('input', e => {
+  query = e.target.value.toLowerCase().trim();
+  render();
+});
+
+// ── Init ──
+buildFilters();
+render();
+</script>
+</body>
+</html>
